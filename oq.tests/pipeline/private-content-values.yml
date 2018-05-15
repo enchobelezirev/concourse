@@ -1,0 +1,12 @@
+DEFAULT_ORG: deploy-service
+ORG_NAME: "deploy-service"
+RT_API_ENDPOINT: "https://api.cf.sap.hana.ondemand.com"
+USER_NAME: "p1940021538"
+USER_PASS: "Toor1234"
+SPACE_NAME: oq-tests-pure-plugins  
+DEFAULT_SPACE: oq-tests-pure           
+DEPLOY_SERVICE_HOST: deploy-service         
+DEPLOY_SERVICE_URL: deploy-service.cfapps.sap.hana.ondemand.com
+slack-webhook: https://hooks.slack.com/services/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
+ci-host: wdflbmd15812.wdf.sap.corp:8080
+slack-chanel: '#cf-dev-team-ds-priv'
