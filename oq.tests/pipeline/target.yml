@@ -297,7 +297,7 @@ jobs:
       RT_API_ENDPOINT: ((RT_API_ENDPOINT))
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
-      RT: xs
+      RT: /workspace/xs/bin/xs
     # on_failure: 
       # put: slack-alert
       # params:

@@ -37,7 +37,8 @@ ADD https://github.com/nvvalchev/spring-music/blob/master/config.mtaext?raw=true
 RUN mkdir /workspace/xs
 RUN ls -a
 RUN unzip ./xs-cli.zip -d /workspace/xs
-RUN export PATH=$PATH:/workspace/xs/bin
+ENV PATH="$PATH:/workspace/xs/bin"
+# RUN export PATH=$PATH:/workspace/xs/bin
 
 
 ENTRYPOINT ["/bin/bash"]
