@@ -283,6 +283,9 @@ jobs:
       passed: [build-docker-image]
       params:
         tag: latest
+    - get: java-image
+      params:
+        tag: latest
   - task: update-deploy-service-task
     image: test-environment-image
     file: "oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml"
