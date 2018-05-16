@@ -285,7 +285,7 @@ jobs:
         tag: latest
   - task: update-deploy-service-task
     image: test-environment-image
-    file: oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml
+    file: oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
       DEFAULT_ORG: ((DEFAULT_ORG))
