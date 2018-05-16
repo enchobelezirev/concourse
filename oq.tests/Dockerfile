@@ -11,6 +11,7 @@ COPY test_scripts /workspace/test_scripts
 COPY test_resources /workspace/test_resources
 COPY test_scenarios /workspace/test_scenarios
 COPY mta_plugin_linux_amd64 /workspace/mta_plugin_linux_amd64
+COPY xs-cli.zip /workspace/xs-cli.zip
 # Install Cloud Foundry cli
 ADD https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.26.0 /tmp/cf-cli.tgz
 RUN mkdir -p /usr/local/bin && \
