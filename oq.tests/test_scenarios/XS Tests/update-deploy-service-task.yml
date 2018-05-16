@@ -1,12 +1,13 @@
 ---
   platform: linux
+  image_resource:
+    type: docker-image
+    source: {repository: openjdk}
   inputs:
   - name: oqtests
     path: "oq-test-git-repo"
   - name: test-environment-image
-  - name: java-image
   run:
-  
     path: 'bash'
     args:
     - -c
