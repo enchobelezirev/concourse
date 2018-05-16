@@ -32,7 +32,7 @@ WORKDIR /workspace
 RUN mkdir /workspace/sanity-check
 ADD https://github.com/nvvalchev/spring-music/blob/master/mta-assembly/spring-music.mtar?raw=true /workspace/test_resources/sanity-check/sanity-check.mtar
 ADD https://github.com/nvvalchev/spring-music/blob/master/config.mtaext?raw=true /workspace/test_resources/sanity-check/
-RUN mkdri /workspace/xs
+RUN mkdir /workspace/xs
 RUN unzip xs-cli.zip -d /workspace/xs
 RUN export PATH=$PATH:/workspace/xs/bin
 
