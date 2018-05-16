@@ -323,11 +323,6 @@ resources:
      uri: https://github.com/SAP/cf-mta-plugin.git
      branch: master
      skip_ssl_verification: true
-
-- name: java-image
-  type: docker-image
-  source:
-    repository: openjdk
     
 - name: test-environment-image
   type: docker-image
