@@ -4,6 +4,7 @@
   - name: oqtests
     path: "oq-test-git-repo"
   - name: test-environment-image
+  - name: java-image
   run:
   
     path: 'bash'
