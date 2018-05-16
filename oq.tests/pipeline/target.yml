@@ -321,6 +321,11 @@ resources:
      branch: master
      skip_ssl_verification: true
 
+- name: java-image
+  type: docker-image
+  source:
+    repository: openjdk
+    
 - name: test-environment-image
   type: docker-image
   source:
