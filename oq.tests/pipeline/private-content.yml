@@ -1,12 +1,12 @@
 DEFAULT_ORG: <>
 DEFAULT_SPACE: <>
-DEPLOY_SERVICE_HOST: <>
+# DEPLOY_SERVICE_HOST: <>
 DEPLOY_SERVICE_URL: <>
 ORG_NAME: <>
 SPACE_NAME: <>
 RT_API_ENDPOINT: <>
 USER_NAME: <>
 USER_PASS: <>
-slack-webhook: <>
+# slack-webhook: <>
 ci-host: <>
-slack-chanel: <>
+# slack-chanel: <>
