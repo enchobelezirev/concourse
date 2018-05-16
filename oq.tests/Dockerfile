@@ -32,6 +32,10 @@ WORKDIR /workspace
 RUN mkdir /workspace/sanity-check
 ADD https://github.com/nvvalchev/spring-music/blob/master/mta-assembly/spring-music.mtar?raw=true /workspace/test_resources/sanity-check/sanity-check.mtar
 ADD https://github.com/nvvalchev/spring-music/blob/master/config.mtaext?raw=true /workspace/test_resources/sanity-check/
+ADD http://nexus.wdf.sap.corp:8081/nexus/content/repositories/build.snapshots/com/sap/xs.onpremise.runtime.minimum/0.0.1522/xs.onpremise.runtime.minimum-0.0.1522-linux-x64.zip /workspace/xs.zip
+RUN mkdri /workspace/xs
+RUN unzip /workspace/xs.zip -d /workspace/xs
+RUN export PATH=$PATH:/workspace/xs/bin
 
 
 ENTRYPOINT ["/bin/bash"]
