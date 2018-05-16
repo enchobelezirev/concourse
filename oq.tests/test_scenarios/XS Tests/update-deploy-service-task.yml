@@ -21,6 +21,7 @@
       echo "${RT} login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation -o ${ORG_NAME} -s ${SPACE_PREFIX}${SPACE_NAME}"
       #TODO: use the update-deploy-service script generated from the crawler
       #bash "/workspace/test_scenarios/CF Tests/Blue Green with Content Change/1InitSpace/run.sh"
+      javac "Hello World"
       echo $JAVA_HOME
       echo $PATH
       echo "${RT} target"
