@@ -6,6 +6,7 @@ ENV VERSION 0.1
 
 
 RUN mkdir /workspace
+RUN ls -a
 #Copy test scripts
 COPY test_scripts /workspace/test_scripts
 COPY test_resources /workspace/test_resources
