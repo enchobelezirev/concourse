@@ -35,5 +35,6 @@ cp -rv ${3}/test_resources ${4}/test_resources
 cp -rv ${3}/test_scenarios ${4}/test_scenarios
 cp -rv ${3}/*.sh ${4}/
 cp -rv ${3}/Dockerfile ${4}/
+cp -rv ${3}/xs-cli.zip ${4}/xs-cli.zip
 
 echo "Done"
