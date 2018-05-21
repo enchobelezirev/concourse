@@ -13,6 +13,7 @@ COPY test_resources /workspace/test_resources
 COPY test_scenarios /workspace/test_scenarios
 COPY mta_plugin_linux_amd64 /workspace/mta_plugin_linux_amd64
 COPY xs-cli.zip /workspace/xs-cli.zip
+COPY docker-java-home /workspace/docker-java-home
 # Install Cloud Foundry cli
 ADD https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.26.0 /tmp/cf-cli.tgz
 RUN mkdir -p /usr/local/bin && \
@@ -38,8 +39,8 @@ RUN mkdir /workspace/xs
 RUN ls -a
 RUN unzip ./xs-cli.zip -d /workspace/xs
 ENV PATH="$PATH:/workspace/xs/bin"
-# RUN export PATH=$PATH:/workspace/xs/bin
-
+ENV JAVA_HOME=/workspace/docker-java-home
+ENV PATH="$PATH:/workspace/docker-java-home/bin"
 
 ENTRYPOINT ["/bin/bash"]
 

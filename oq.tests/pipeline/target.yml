@@ -35,6 +35,32 @@ jobs:
       outputs:
       - name: "docker-context"
         path: "output"
+  - task: prepare-xs-cli-context
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: openjdk}
+      inputs:
+        - name: "docker-context"
+          path: "output"
+      run:
+        path: "bash"
+        args:
+          - "-c"
+          - |
+            echo "This is just a test"
+            ls -a -l java
+            env
+            echo $PATH
+            which java
+            
+            cp -rv $JAVA_HOME output/context/
+            ls -l -a "output/context"
+            cd $JAVA_HOME
+            ls -a -l bin
+      # TODO: export the java location in the context folder
+      # in the docker image add logic which exports the PATH using the java location
   - put: test-environment-image
     params:
       build: docker-context/context
@@ -284,8 +310,45 @@ jobs:
       params:
         tag: latest
   - task: update-deploy-service-task
-    image: test-environment-image
-    file: "oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml"
+    # image: test-environment-image
+    # file: "oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml"
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source: {repository: openjdk}
+      inputs:
+      - name: oqtests
+        path: "oq-test-git-repo"
+      - name: test-environment-image
+      # - name: test-environment-image
+      run:
+        path: 'bash'
+        args:
+        - -c
+        - |
+          cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
+          cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+          # mkdir /workspace/xs
+          #TODO: download the latest xs cli from maven
+          find . -name "xs"
+          echo "${RT} login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation -o ${ORG_NAME} -s ${SPACE_PREFIX}${SPACE_NAME}"
+          #TODO: use the update-deploy-service script generated from the crawler
+          #bash "/workspace/test_scenarios/CF Tests/Blue Green with Content Change/1InitSpace/run.sh"
+          export PATH="$PATH:/test-environment-image/rootfs/workspace/xs/bin"
+          # which java
+          # which javac
+          java -version
+          # env
+          echo $JAVA_HOME
+          echo $PATH
+          echo "${RT} target"
+          echo "calling which xs"
+          which xs
+          ls -a -l ./test-environment-image/rootfs/workspace/xs/bin
+          ./test-environment-image/rootfs/workspace/xs/bin/xs target
+          ./test-environment-image/rootfs/workspace/xs/bin/xs login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation
+          # ${RT} target
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
       DEFAULT_ORG: ((DEFAULT_ORG))
@@ -297,7 +360,7 @@ jobs:
       RT_API_ENDPOINT: ((RT_API_ENDPOINT))
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
-      RT: /workspace/xs/bin/xs
+      RT: xs
     # on_failure: 
       # put: slack-alert
       # params:
