@@ -1,0 +1,8 @@
+source /root/XSOQTests/test_functions.sh
+source /root/XSOQTests/test_utils.sh
+RT=cf
+${RT} undeploy com.sap.sample.mta.circular -f
+assert_call_was_successful "Undeploy"
+
+get_apps
+assert_components_do_not_exist circular-dependencies-modules ${CONSOLE_OUT_LOCATION} first-to-be-deployed second-to-be-deployed

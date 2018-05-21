@@ -1,0 +1,3 @@
+cd "${TEST_WORKING_DIRECTORY}"
+sed -i "0,/<SCHEMA_NAME>/s/<SCHEMA_NAME>/SHINE_USER_CONTAINER_SCHEMA/" shine-scenario/sap-xsac-shine.mtaext # Replaces the first occurrence of <SCHEMA_NAME> with SHINE_USER_CONTAINER_SCHEMA.
+sed -i "0,/<SCHEMA_NAME>/s/<SCHEMA_NAME>/SHINE_CONTAINER_SCHEMA/" shine-scenario/sap-xsac-shine.mtaext # Replaces the second occurrence of <SCHEMA_NAME> with SHINE_CONTAINER_SCHEMA.

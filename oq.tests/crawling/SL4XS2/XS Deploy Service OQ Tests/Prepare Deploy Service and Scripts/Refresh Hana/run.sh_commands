@@ -1,0 +1,13 @@
+su - xsaadm -c '
+echo "Stopping Hana DB..."
+HDB stop
+if [ $? -eq 0 ]; then
+ echo "HDB successfully stoped."
+fi
+
+echo "Starting Hana DB..."
+HDB start
+if [ $? -eq 0 ]; then
+ echo "HDB successfully started."
+fi
+'

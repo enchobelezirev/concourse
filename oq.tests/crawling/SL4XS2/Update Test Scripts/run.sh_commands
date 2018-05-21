@@ -1,0 +1,7 @@
+cd ~
+if [ -d ~/XSOQTests ]; then
+ cd ~/XSOQTests;
+ git pull;
+else
+ git clone https://github.wdf.sap.corp/xs2ds/XSOQTests.git /root/XSOQTests
+fi

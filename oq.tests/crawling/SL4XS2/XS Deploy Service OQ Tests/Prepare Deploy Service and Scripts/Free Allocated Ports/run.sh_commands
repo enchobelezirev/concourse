@@ -1,0 +1,2 @@
+source /root/XSOQTests/test_functions.sh
+free_ports

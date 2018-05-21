@@ -1,0 +1,26 @@
+source /root/XSOQTests/test_functions.sh
+xs undeploy com.sap.xsa.hrtt --do-not-fail-on-missing-permissions -f
+get_apps
+assert_components_do_not_exist hrtt-modules hrtt-core hrtt-service sqlanlz-ui
+get_apps
+xs undeploy com.sap.devx.di --do-not-fail-on-missing-permissions -f
+assert_components_do_not_exist di-core-modules di-local-npm-registry di-core devx-ui5 di-runner di-cert-admin-ui di-space-enablement-ui
+get_apps
+xs undeploy com.sap.devx.webide --do-not-fail-on-missing-permissions -f
+assert_components_do_not_exist webide-modules webide
+
+#su - xsaadm -c 'cd ~
+#chmod 775 ./common-oq-functions.sh
+#. ./common-oq-functions.sh
+#xs undeploy com.sap.xsa.hrtt -f
+#get_apps
+#assert_components_are_undeployed hrtt-modules hrtt-core hrtt-service sqlanlz-ui
+
+#get_apps
+#xs undeploy com.sap.devx.di -f
+#assert_components_are_undeployed di-core-modules di-local-npm-registry di-core devx-ui5 di-runner di-cert-admin-ui di-space-enablement-ui
+
+#get_apps
+#xs undeploy com.sap.devx.webide -f
+#assert_components_are_undeployed webide-modules webide
+#'

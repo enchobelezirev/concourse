@@ -1,0 +1,5 @@
+xs unbind-service deploy-service deploy-service-database
+xs delete-service deploy-service-database -f
+xs create-service hana schema deploy-service-database
+xs bind-service deploy-service deploy-service-database
+xs restart deploy-service

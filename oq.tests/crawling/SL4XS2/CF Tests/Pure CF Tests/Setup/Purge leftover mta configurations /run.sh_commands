@@ -1,0 +1,1 @@
+cf purge-mta-config -u deploy-service-oq-tests.cfapps.sap.hana.ondemand.com || true

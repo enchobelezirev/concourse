@@ -317,46 +317,31 @@ jobs:
   - task: update-deploy-service-task
     # image: test-environment-image
     # file: "oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml"
+    image: test-environment-image
     config:
       platform: linux
-      image_resource:
-        type: docker-image
-        source: {repository: openjdk}
       inputs:
-      - name: oqtests
-        path: "oq-test-git-repo"
-      - name: test-environment-image
-      # - name: test-environment-image
+        - name: oqtests
+          path: "oq-test-git-repo"
       run:
         path: 'bash'
         args:
-        - -c
-        - |
-          cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
-          cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-          # mkdir /workspace/xs
-          #TODO: download the latest xs cli from maven
-          find . -name "xs"
-          echo "${RT} login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation -o ${ORG_NAME} -s ${SPACE_PREFIX}${SPACE_NAME}"
-          #TODO: use the update-deploy-service script generated from the crawler
-          #bash "/workspace/test_scenarios/CF Tests/Blue Green with Content Change/1InitSpace/run.sh"
-          export PATH="$PATH:/test-environment-image/rootfs/workspace/xs/bin"
-          # which java
-          # which javac
-          java -version
-          # env
-          echo $JAVA_HOME
-          echo $PATH
-          echo "${RT} target"
-          echo "calling which xs"
-          which xs
-          export XS_TRACE=true
-          ls -a -l ./test-environment-image/rootfs/workspace/xs/bin
-          ./test-environment-image/rootfs/workspace/xs/bin/xs target
-          ./test-environment-image/rootfs/workspace/xs/bin/xs api ${RT_API_ENDPOINT}
-          curl https://mo-a905b23ce.mo.sap.corp:30030/v2/info
-          ./test-environment-image/rootfs/workspace/xs/bin/xs login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation
-          # ${RT} target
+          - -c
+          - |
+            cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
+            cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+            echo "${RT} login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation -o ${ORG_NAME} -s ${SPACE_PREFIX}${SPACE_NAME}"
+            #TODO: use the update-deploy-service script generated from the crawler
+            #bash "/workspace/test_scenarios/CF Tests/Blue Green with Content Change/1InitSpace/run.sh"
+            echo "Calling path..."
+            echo $PATH
+            # export PATH="$PATH :/test-environment-image/rootfs/workspace/xs/bin"
+            echo "calling which xs"
+            which xs
+            xs login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} -o ${ORG_NAME} -s ${DEFAULT_SPACE} --skip-ssl-validation
+
+            bash "/workspace/test_scenarios/XS Tests/Update Deploy Service/run.sh"
+            # ${RT} target
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
       DEFAULT_ORG: ((DEFAULT_ORG))

@@ -1,0 +1,14 @@
+#su - xsaadm -c '
+#cd ~
+#chmod 777 ./common-oq-functions.sh
+#. ./common-oq-functions.sh
+#xs undeploy com.sap.sample.mta.circular -f
+#assert_call_was_successful "Undeploy"
+#get_apps
+#assert_components_are_undeployed circular-dependencies-modules ${CONSOLE_OUT_LOCATION} first-to-be-deployed second-to-be-deployed
+#'
+source /root/XSOQTests/test_functions.sh
+xs undeploy com.sap.sample.mta.circular -f
+assert_call_was_successful "Undeploy"
+get_apps
+assert_components_do_not_exist applications circular-dependencies-modules ${CONSOLE_OUT_LOCATION} first-to-be-deployed second-to-be-deployed
