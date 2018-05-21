@@ -57,13 +57,18 @@ jobs:
             
             cp -rv $JAVA_HOME output/context/
             ls -l -a "output/context"
-            cd $JAVA_HOME
-            ls -a -l bin
+            cp -rvL output/context/* new-output/
+            cd new-output/
+            pwd
+            ls -a -l
+      outputs:
+        - name: "new-output"
+        # TODO: copy the content of the old input to a new folder and pass that folder as a build arg of the test-environemnt-image
       # TODO: export the java location in the context folder
       # in the docker image add logic which exports the PATH using the java location
   - put: test-environment-image
     params:
-      build: docker-context/context
+      build: new-output
       tag_as_latest: true
 #Sanity check - single job, single task
 - name: run-sanity-check-test
@@ -345,8 +350,11 @@ jobs:
           echo "${RT} target"
           echo "calling which xs"
           which xs
+          export XS_TRACE=true
           ls -a -l ./test-environment-image/rootfs/workspace/xs/bin
           ./test-environment-image/rootfs/workspace/xs/bin/xs target
+          ./test-environment-image/rootfs/workspace/xs/bin/xs api ${RT_API_ENDPOINT}
+          curl https://mo-a905b23ce.mo.sap.corp:30030/v2/info
           ./test-environment-image/rootfs/workspace/xs/bin/xs login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation
           # ${RT} target
     params:
