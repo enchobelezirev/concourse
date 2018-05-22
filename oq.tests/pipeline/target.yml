@@ -353,6 +353,7 @@ jobs:
       RT_API_ENDPOINT: ((RT_API_ENDPOINT))
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
+      DEPLOY_SERVICE_DIR: /workspace/deploy-service-dir
       RT: xs
     # on_failure: 
       # put: slack-alert
