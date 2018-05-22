@@ -1,4 +1,6 @@
 export PARENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
+echo $PARENT_DIR
+ls -a -l $PARENT_DIR
 source ${PARENT_DIR}/test_functions.sh
 generate_local_executable "$0"
 set -e
