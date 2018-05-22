@@ -110,8 +110,8 @@ function download_and_extract_version_from_concrete_metadata {
                 exit 1
         fi
         echo_info "Extracting latest version from version_xml..."
-        VER=$(xmllint --xpath "//snapshotVersion[extension='pom']/value/text()" "${version_xml}")
-  
+        VER=$(xmllint --xpath "//snapshotVersion[extension='pom']/value/text()" "${version_xml}") 
+}
 
 function get_latest_version {
     echo_info "Downloading latest deploy service version from ${XS_DEPLOY_SNAPSHOTS_URL}..."
