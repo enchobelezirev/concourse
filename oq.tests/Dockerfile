@@ -41,7 +41,7 @@ RUN unzip ./xs-cli.zip -d /workspace/xs
 ENV PATH="$PATH:/workspace/xs/bin"
 ENV JAVA_HOME=/workspace/docker-java-home
 ENV PATH="$PATH:/workspace/docker-java-home/bin"
-RUN apt-get install update && apt-get install -y libxml2-utils
+RUN apt-get update && apt-get install -y libxml2-utils
 
 ENTRYPOINT ["/bin/bash"]
 
