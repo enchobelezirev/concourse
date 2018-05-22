@@ -206,3 +206,11 @@ function generate_local_executable {
     chmod a+x ${script_location};
     echo "re-execute script location is ${script_location}"
 }
+
+function check_status_code {
+        if [ $? -ne 0 ]; then
+                echo_error "Operation $1 failed."
+                download_deploy_service_logs
+                exit 1
+        fi
+}
