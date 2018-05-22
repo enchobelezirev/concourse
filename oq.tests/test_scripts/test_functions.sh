@@ -148,6 +148,8 @@ function get_latest_war_and_yml {
 }
 
 function update_deploy_service_content {
+echo "Printing environemnt"
+env
     mkdir -pv $DEPLOY_SERVICE_DIR/target/manifests
     get_latest_war_and_yml
 }
