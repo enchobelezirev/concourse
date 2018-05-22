@@ -354,6 +354,7 @@ jobs:
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
       DEPLOY_SERVICE_DIR: /workspace/deploy-service-dir
+      XS_DEPLOY_SNAPSHOTS_URL: http://nexus.wdf.sap.corp:8081/nexus/content/repositories/build.snapshots/com/sap/cloud/lm/sl/xs2/com.sap.cloud.lm.sl.xs2.web/
       RT: xs
     # on_failure: 
       # put: slack-alert

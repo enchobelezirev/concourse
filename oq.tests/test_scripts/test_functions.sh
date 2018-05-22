@@ -190,7 +190,7 @@ function update_on_xs {
 }
 
 
-function generate_local_executable(){
+function generate_local_executable {
     echo $@;
     echo "generating local executable for ${1}"
     local original_path=$1
