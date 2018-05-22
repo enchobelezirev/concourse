@@ -7,7 +7,7 @@ env
 generate_local_executable "$0"
 set -e
 update_deploy_service_content
-if [[ $RUNTIME == "xs" ]]; then
+if [[ $RT == "xs" ]]; then
   update_on_xs
 else
   update_on_cf
