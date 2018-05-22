@@ -41,6 +41,11 @@ RUN unzip ./xs-cli.zip -d /workspace/xs
 ENV PATH="$PATH:/workspace/xs/bin"
 ENV JAVA_HOME=/workspace/docker-java-home
 ENV PATH="$PATH:/workspace/docker-java-home/bin"
+ENV HTTPS_PROXY=https://proxy.wdf.sap.corp:8080
+ENV HTTP_PROXY=http://proxy.wdf.sap.corp:8080
+
+ENV https_proxy=https://proxy.wdf.sap.corp:8080
+ENV http_proxy=https://proxy.wdf.sap.corp:8080
 RUN apt-get update && apt-get install -y libxml2-utils
 
 ENTRYPOINT ["/bin/bash"]
