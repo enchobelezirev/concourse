@@ -215,7 +215,7 @@ function detect_xs_root {
 function update_xs_cli_plugin {
     get_latest_version    
     # XS_CLIENT_PATH=`whereis xs | sed -n 's/^xs: \(\/.*\)\/bin\/.*$/\1/p'`;
-    local xs_root="$(cdetet_xs_root)"
+    local xs_root="$(detect_xs_root)"
     echo_info "detected xs root directory: ${xs_root}"
     local CLI_PLUGIN_DIR="${xs_root}/jars/cli-plugins/ds"    
     echo_info "deleting deploy-service client plugin jars in $CLI_PLUGIN_DIR"
