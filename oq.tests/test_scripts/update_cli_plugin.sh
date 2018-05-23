@@ -4,6 +4,6 @@ generate_local_executable "$0"
 set -e
 if [[ $RUNTIME == "xs" ]]; then
   update_xs_cli_plugin
-else
-  update_cf_cli_plugin
-fi
+#else
+ # update_cf_cli_plugin
+#fi
