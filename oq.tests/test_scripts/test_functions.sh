@@ -233,10 +233,71 @@ function update_xs_cli_plugin {
     wget --no-proxy -O "${DEPLOY_SERVICE_DIR}/${XS2_ASSEMBLY}-${cli_version_value}-all.zip" "${XS_BUILD_ASSEMBLY_VERSION_URL}/${XS2_ASSEMBLY}-${cli_version_value}-all.zip"
     unzip "${DEPLOY_SERVICE_DIR}/${XS2_ASSEMBLY}-${cli_version_value}-all.zip" -d "${CLI_PLUGIN_DIR}"
 }
+
 function check_status_code {
         if [ $? -ne 0 ]; then
                 echo_error "Operation $1 failed."
                 download_deploy_service_logs
                 exit 1
         fi
+}
+
+function enable_opaque_tokens_on_xs {
+    echo "Detecting XS Location folder..."
+    detect_xs_root
+    echo "XS Location detected: ${XS_ROOT}"
+    echo "Detecting xs command"
+    ${XS_ROOT}/bin/xs target
+    check_status_code "${XS_ROOT}/bin/xs target"
+    if [ "$?" -ne 0 ]; then
+        echo "XS command not found in ${XS_ROOT}/bin/xs"
+        exit 1
+    fi
+    echo "XS Script location: ${XS_ROOT}/bin/xs"
+    echo "Testing XS script agains oauth-token command..."
+    TOKEN=$(xs oauth-token)
+    echo $TOKEN
+    echo "Changing xs script to support opaque tokens..."
+    OPAQUE_TOKEN_ENABLE_STRING="-Dcom.sap.xs2rt.client.opaqueToken=true"
+    cat ${REPLACEMENT_XS_SCRIPT}
+    rm -rf ${XS_ROOT}/bin/xs
+    mv ${REPLACEMENT_XS_SCRIPT} ${XS_ROOT}/bin/
+    echo "XS script changed."
+    echo "Validating that the opaque-tokens are supported..."
+    OPAQUE_TOKEN=$(xs oauth-token)
+    echo $OPAQUE_TOKEN
+    if [[ $TOKEN == $OPAQUE_TOKEN ]]; then
+        echo "Token not changed successfully. Fisrt token: ${TOKEN}, expected opaque token but got: ${OPAQUE_TOKEN}"
+        exit 1
+    fi
+}
+
+function disable_opaque_tokens_on_xs {
+    echo "Detecting XS Location folder..."
+    detect_xs_root
+    echo "XS Location detected: ${XS_ROOT}"
+    echo "Detecting xs command"
+    ${XS_ROOT}/bin/xs target
+    check_status_code "${XS_ROOT}/bin/xs target"
+    if [ "$?" -ne 0 ]; then
+        echo "XS command not found in ${XS_ROOT}/bin/xs"
+        exit 1
+    fi
+    echo "XS Script location: ${XS_ROOT}/bin/xs"
+    echo "Testing XS script agains oauth-token command..."
+    OPAQUE_TOKEN=$(xs oauth-token)
+    echo $OPAQUE_TOKEN
+    echo "Changing xs script not to support opaque tokens..."
+    OPAQUE_TOKEN_ENABLE_STRING=""
+    cat ${REPLACEMENT_XS_SCRIPT}
+    rm -rf ${XS_ROOT}/bin/xs
+    mv ${REPLACEMENT_XS_SCRIPT} ${XS_ROOT}/bin/
+    echo "XS script changed."
+    echo "Validating that the opaque-tokens are supported..."
+    TOKEN=$(xs oauth-token)
+    echo $TOKEN
+    if [[ $TOKEN == $OPAQUE_TOKEN ]]; then
+        echo "Token not changed successfully. Fisrt token: ${OPAQUE_TOKEN}, expected jwt token but got: ${TOKEN}"
+        exit 1
+    fi
 }
