@@ -188,7 +188,9 @@ jobs:
       RT_API_ENDPOINT: ((RT_API_ENDPOINT))
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
+      RECREATE_SPACE: recreateSpace
       RT: xs
+      REPLACEMENT_XS_SCRIPT: /workspace/test_scenarios/XS Tests/Opaque Tokens/xs
   - task: enable-opaque-tokens
     # file: "oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml"
     image: test-environment-image

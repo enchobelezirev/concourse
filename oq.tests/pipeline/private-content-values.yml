@@ -13,7 +13,7 @@
 # slack-chanel: '#cf-dev-team-ds-priv'
 
 # XS
-DEFAULT_ORG: deploy-service
+DEFAULT_ORG: myorg
 ORG_NAME: "myorg"
 RT_API_ENDPOINT: "https://mo-a905b23ce.mo.sap.corp:30030"
 USER_NAME: "XSA_ADMIN"
