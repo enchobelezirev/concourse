@@ -301,3 +301,77 @@ function disable_opaque_tokens_on_xs {
         exit 1
     fi
 }
+
+function login {
+    local recreate_space="${1}"
+
+    if [[ ! -d "${RT_HOME}" ]] ; then
+        mkdir -pv "${RT_HOME}" 
+    fi
+    
+    ${RT} logout;    
+    #using deploy-service/oq-tests default target to achieve login.
+    ${RT} login -a ${RT_API_ENDPOINT} -u "${USER_NAME}" -p "${USER_PASS}" --skip-ssl-validation -o "${DEFAULT_ORG}" -s "${DEFAULT_SPACE}"
+    if [ $? -ne 0 ] ; then
+        echo_error "Could not log-in : -a ${RT_API_ENDPOINT} -u ${USER_NAME}"
+        return 1;
+    fi
+    
+    ${RT} t -o "${ORG_NAME}" -s "${SPACE_NAME}" 
+    local target_rc=$?;
+    if [[ "${recreate_space}" != "recreateSpace" ]] ; then
+        if [ $target_rc -eq 0 ] ; then 
+            return 0;
+        else
+            echo_error "Targeting -o ${ORG_NAME} -s ${SPACE_NAME} failed and no RECREATE_SPACE is set"
+            return 1;
+            
+        fi
+    fi
+
+    ${RT} space "${SPACE_NAME}";
+    if [[ $? -eq 0 ]] && [[ ${target_rc} -eq 0 ]] ; then
+        delete_space_content ${RT} "${SPACE_NAME}"
+    fi
+    ${RT} create-space "${SPACE_NAME}" -o "${ORG_NAME}"
+    ${RT} set-space-role "${USER_NAME}" "${ORG_NAME}" "${SPACE_NAME}" SpaceDeveloper
+    ${RT} target -o "${ORG_NAME}" -s "${SPACE_NAME}"
+    target_rc=$?
+    echo_info "Space ${SPACE_NAME} creation return code: ${target_rc}"
+    return ${target_rc};
+}
+
+function delete_space_content() {
+        #if successfully targeted
+        local RT=${1};
+        local SPACE_NAME=${2};
+        
+        delete_services ${RT}
+        delete_applications ${RT}     
+}
+
+function delete_services {
+    local RT=${1}
+    # Delete leftover services
+    services=$(${RT} services | grep -vE 'Getting|Found|name|-------*' | cut -d ' ' -f 1)
+    # Create an array
+    services=(${services// /})
+    echo_info "Services to delete: " ${services[@]}
+    for ((x=0; x<${#services[@]}; x++)) ; do
+        ${RT} ds ${services[x]} -f || true
+    done
+}
+
+function delete_applications {
+
+    local RT=${1}
+    # Delete leftover applications (TODO why skip the auditlog?)
+    applications=$(${RT} apps | grep -vE 'Getting|Found|name|-------*' | cut -d ' ' -f 1)
+    # Create an array
+    applications=(${applications// /})
+    echo_info "Applications to delete: " ${applications[@]}
+    for ((x=0; x<${#applications[@]}; x++));
+      do
+       ${RT} d ${applications[x]} -f || true
+      done
+}
