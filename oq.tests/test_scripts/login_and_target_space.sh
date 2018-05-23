@@ -1,5 +1,5 @@
 export PARENT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd );
-source $(dirname "${PARENT_DIR}")/test_functions.sh
+source ${PARENT_DIR}/test_functions.sh
 
 if [[ -z ${RT_API_ENDPOINT} && ${RT} -eq "xs" ]] ; then
         get_xs_api_endpoint;
