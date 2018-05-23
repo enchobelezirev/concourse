@@ -207,6 +207,32 @@ function generate_local_executable {
     echo "re-execute script location is ${script_location}"
 }
 
+function detect_xs_root {
+    XS_ROOT="$(dirname $(dirname $(realpath $(which xs))))"
+	echo "${XS_ROOT}"
+}
+
+function update_xs_cli_plugin {
+    get_latest_version    
+    # XS_CLIENT_PATH=`whereis xs | sed -n 's/^xs: \(\/.*\)\/bin\/.*$/\1/p'`;
+    local xs_root="$(cdetet_xs_root)"
+    echo_info "detected xs root directory: ${xs_root}"
+    local CLI_PLUGIN_DIR="${xs_root}/jars/cli-plugins/ds"    
+    echo_info "deleting deploy-service client plugin jars in $CLI_PLUGIN_DIR"
+    rm -rfv $CLI_PLUGIN_DIR/*jar
+    #echo_info "adding slf4j jars"
+    #cp "${ROOT_SCRIPTS_DIR}/setup_resources/slf4j-jars/*" "$CLI_PLUGIN_DIR/"
+    echo_info "Latest version of cli plugin is ${VERSION_VALUE}"
+    local XS_BUILD_ASSEMBLY_VERSION_URL="${NEXUS_URL}content/repositories/build.snapshots/com/sap/cloud/lm/sl/xs2/com.sap.cloud.lm.sl.xs2.cmd.assembly/${VERSION_VALUE}"
+    echo "XS_BUILD_ASSEMLBY_VERSION_URL=${XS_BUILD_ASSEMBLY_VERSION_URL}"
+    local XS_BUILD_ASSEMBLY_META_URL="${XS_BUILD_ASSEMBLY_VERSION_URL}/maven-metadata.xml"
+    local XS2_ASSEMBLY="com.sap.cloud.lm.sl.xs2.cmd.assembly"
+    download_and_extract_version_from_concrete_metadata ${XS_BUILD_ASSEMBLY_META_URL}
+    local cli_version_value=$VER
+    echo_info "Downloading latest cli-plugin for version ${cli_version_value}..."
+    wget --no-proxy -O "${DEPLOY_SERVICE_DIR}/${XS2_ASSEMBLY}-${cli_version_value}-all.zip" "${XS_BUILD_ASSEMBLY_VERSION_URL}/${XS2_ASSEMBLY}-${cli_version_value}-all.zip"
+    unzip "${DEPLOY_SERVICE_DIR}/${XS2_ASSEMBLY}-${cli_version_value}-all.zip" -d "${CLI_PLUGIN_DIR}"
+}
 function check_status_code {
         if [ $? -ne 0 ]; then
                 echo_error "Operation $1 failed."
