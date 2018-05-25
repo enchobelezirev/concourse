@@ -239,6 +239,7 @@ jobs:
       RT: xs
       APP_LOCATION: "/workspace/test_resources/opaque-tokens-resources"
       EXPECTED_APPLICATIONS: ztana"
+      MTAR_LOCATION: "/workspace/test_resources/opaque-tokens-resources/anantz.mtar"
       
   - task: disable-opaque-tokens
     image: test-environment-image

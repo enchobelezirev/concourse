@@ -1,0 +1,7 @@
+_schema-version: "2.0.0"
+ID: anatz
+version: 3.0.0
+
+modules:
+  - name: anatz
+    type: java

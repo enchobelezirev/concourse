@@ -262,9 +262,11 @@ function enable_opaque_tokens_on_xs {
     sed -e "s/\${OPAQUE_TOKEN_ENABLE_STRING}/-Dcom.sap.xs2rt.client.opaqueToken=true/" "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs"
     cat "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs"
     rm -rf ${XS_ROOT}/bin/xs
+    ls -a -l ${XS_ROOT}/bin
     mv "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs" ${XS_ROOT}/bin/
     echo "XS script changed."
     cat ${XS_ROOT}/bin/xs
+    ls -a -l ${XS_ROOT}/bin
     # echo "Validating that the opaque-tokens are supported..."
     # OPAQUE_TOKEN=$(xs oauth-token)
     # echo $OPAQUE_TOKEN
