@@ -263,6 +263,7 @@ function enable_opaque_tokens_on_xs {
     rm -rf ${XS_ROOT}/bin/xs
     mv ${REPLACEMENT_XS_SCRIPT} ${XS_ROOT}/bin/
     echo "XS script changed."
+    cat ${XS_ROOT}/bin/xs
     # echo "Validating that the opaque-tokens are supported..."
     # OPAQUE_TOKEN=$(xs oauth-token)
     # echo $OPAQUE_TOKEN
