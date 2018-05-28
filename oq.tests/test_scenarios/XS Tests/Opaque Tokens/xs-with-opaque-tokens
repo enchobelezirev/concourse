@@ -48,6 +48,4 @@ JVM_OPTS="-Xmx128m -Xms64m -XX:MetaspaceSize=64m -XX:ThreadStackSize=${STACK_SIZ
 JVM_OPTS="${JVM_OPTS} -XX:MaxGCThreads=2 -Dcom.sap.jvm.vmtag=xs -Dcom.sap.xs2rt.client.opaqueToken=true"
 # -Dcom.sap.xs2rt.client.opaqueToken=true
 
-fi
-
 exec "$JAVA" ${JVM_OPTS} -cp "$JARSDIR/*" -Dhttp.keepAlive=false com.sap.xs2rt.client.impl.Main "$@"

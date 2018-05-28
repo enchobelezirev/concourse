@@ -161,27 +161,28 @@ jobs:
       passed: [update-deploy-service]
       params:
         tag: latest
-  - task: enable-opaque-tokens
-    # file: "oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml"
-    image: test-environment-image
-    config:
-      platform: linux
-      inputs:
-        - name: oqtests
-          path: "oq-test-git-repo"
-      run:
-        path: 'bash'
-        args:
-          - -c
-          - |
-            cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
-            cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+  # - task: enable-opaque-tokens
+  #   # file: "oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml"
+  #   image: test-environment-image
+  #   config:
+  #     platform: linux
+  #     inputs:
+  #       - name: oqtests
+  #         path: "oq-test-git-repo"
+  #     run:
+  #       path: 'bash'
+  #       args:
+  #         - -c
+  #         - |
+
+  #           cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
+  #           cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
           
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
-    params:
-      TEST_WORKING_DIRECTORY: "/workspace"
-      RT: xs
-      REPLACEMENT_XS_SCRIPT: "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs"
+  #           bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
+  #   params:
+  #     TEST_WORKING_DIRECTORY: "/workspace"
+  #     RT: xs
+      # REPLACEMENT_XS_SCRIPT: "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs"
   - task: login-and-target-task
     # file: "oqtests/oq.tests/test_scenarios/XS Tests/update-deploy-service-task.yml"
     image: test-environment-image
@@ -195,11 +196,16 @@ jobs:
         args:
           - -c
           - |
-            ls -a -l /workspace/xs/
+            ls -a -l /workspace/xs/bin
+            echo "Na maika ti v putkata..."
+            cat /workspace/xs/bin/xs
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-
+            export XSCLIENT_CONTEXTFILE="${TEST_WORKING_DIRECTORY}/login-dir"
+            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
+      outputs:
+        - name: login-dir
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
       DEFAULT_ORG: ((DEFAULT_ORG))
@@ -221,15 +227,18 @@ jobs:
       inputs:
         - name: oqtests
           path: "oq-test-git-repo"
+        - name: login-dir
       run:
         path: 'bash'
         args:
           - -c
           - |
-
+            $(which xs)
             echo "This is the modified xs script $(cat $(which xs))"
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+            export XSCLIENT_CONTEXTFILE="${TEST_WORKING_DIRECTORY}/login-dir"
+            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Deploy/run.sh"
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
@@ -272,6 +281,7 @@ jobs:
       inputs:
         - name: oqtests
           path: "oq-test-git-repo"
+        - name: login-dir
       run:
         path: 'bash'
         args:
@@ -279,6 +289,7 @@ jobs:
           - |
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+            export XSCLIENT_CONTEXTFILE="${TEST_WORKING_DIRECTORY}/login-dir"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Undeploy/run.sh"
     params:
       # TODO: MTA ID
@@ -300,6 +311,7 @@ jobs:
       inputs:
         - name: oqtests
           path: "oq-test-git-repo"
+        - name: login-dir
       run:
         path: 'bash'
         args:
@@ -307,6 +319,7 @@ jobs:
           - |
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+            export XSCLIENT_CONTEXTFILE="${TEST_WORKING_DIRECTORY}/login-dir"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Delete Space/run.sh"
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
