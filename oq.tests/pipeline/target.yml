@@ -201,7 +201,7 @@ jobs:
             cat /workspace/xs/bin/xs
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            export XSCLIENT_CONTEXTFILE="${TEST_WORKING_DIRECTORY}/login-dir"
+            export XSCLIENT_CONTEXTFILE="login-dir"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
       outputs:
@@ -233,11 +233,14 @@ jobs:
         args:
           - -c
           - |
+            cat login-dir
+            for i in login-dir/*; do echo "Printing content of $i"; cat $i; done;
             $(which xs)
             echo "This is the modified xs script $(cat $(which xs))"
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            export XSCLIENT_CONTEXTFILE="${TEST_WORKING_DIRECTORY}/login-dir"
+            echo "export XSCLIENT_CONTEXTFILE=login-dir"
+            export XSCLIENT_CONTEXTFILE="login-dir"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Deploy/run.sh"
     params:
@@ -289,7 +292,7 @@ jobs:
           - |
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            export XSCLIENT_CONTEXTFILE="${TEST_WORKING_DIRECTORY}/login-dir"
+            export XSCLIENT_CONTEXTFILE="login-dir"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Undeploy/run.sh"
     params:
       # TODO: MTA ID
@@ -319,7 +322,7 @@ jobs:
           - |
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            export XSCLIENT_CONTEXTFILE="${TEST_WORKING_DIRECTORY}/login-dir"
+            export XSCLIENT_CONTEXTFILE="login-dir"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Delete Space/run.sh"
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
