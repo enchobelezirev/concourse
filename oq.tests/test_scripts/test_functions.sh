@@ -379,3 +379,15 @@ function delete_applications {
        ${RT} d ${applications[x]} -f || true
       done
 }
+
+function find_mtar() {
+    local archive_location=${1}
+    if [ -z ${archive_location} ]; then
+        return;
+    fi
+    local content_dir=$(pwd);
+    if [ -d "${TEST_WORKING_DIRECTORY}" ] ; then
+        content_dir=${TEST_WORKING_DIRECTORY}
+    fi
+    find "${content_dir}/${archive_location}" -name '*.mtar' | head -1
+}
