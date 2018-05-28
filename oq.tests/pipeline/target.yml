@@ -176,6 +176,7 @@ jobs:
           - |
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+          
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
@@ -194,6 +195,7 @@ jobs:
         args:
           - -c
           - |
+            ls -a -l /workspace/xs/
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
 

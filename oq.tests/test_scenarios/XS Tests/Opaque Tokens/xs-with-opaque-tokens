@@ -1,0 +1,53 @@
+#!/bin/bash
+
+function get_bin_dir {
+    SOURCE=${BASH_SOURCE[0]}
+    while [ -h "$SOURCE" ]; do                     # While $SOURCE is still a link (-h)
+      DIR=$( cd -P $( dirname "$SOURCE") && pwd )
+      SOURCE=$(readlink "$SOURCE")                 # resolve it as absolute ...  
+      [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # .. or relative link
+    done
+    DIR=$( cd -P $( dirname "$SOURCE" ) && pwd )
+    echo $DIR
+}
+
+BIN_DIR=$(get_bin_dir)
+
+if [ -e "${BIN_DIR}/../installdata/sapjvm_8_cons/bin/java" ]; then
+    JAVA_HOME=${BIN_DIR}/../installdata/sapjvm_8_cons
+elif [ -e "${BIN_DIR}/../installdata/runtimes/sapjvm_8_rel/bin/java" ]; then
+    JAVA_HOME=${BIN_DIR}/../installdata/runtimes/sapjvm_8_rel
+elif [ -e "${BIN_DIR}/../sapjvm_8/bin/java" ]; then
+    JAVA_HOME=${BIN_DIR}/../sapjvm_8
+elif [ -e "${BIN_DIR}/../sapjvm_8_jre/bin/java" ]; then
+    JAVA_HOME=${BIN_DIR}/../sapjvm_8_jre
+fi
+
+if test "$JAVA_HOME"x = x
+then
+    echo "JAVA_HOME must be set"
+    exit 1
+fi
+
+JAVA="$JAVA_HOME/bin/java"
+JARSDIR=$BIN_DIR/../jars
+cd "$JARSDIR"
+JARSDIR=`pwd`
+cd - > /dev/null
+
+KERNEL_NAME=`uname -s`
+PLATFORM_NAME=`uname -m`
+
+if [[ $KERNEL_NAME == "AIX" || $PLATFORM_NAME == "ppc64" || $PLATFORM_NAME == "ppc64le" ]]; then
+    STACK_SIZE=512
+else
+    STACK_SIZE=256
+fi
+
+JVM_OPTS="-Xmx128m -Xms64m -XX:MetaspaceSize=64m -XX:ThreadStackSize=${STACK_SIZE} -XX:ReservedCodeCacheSize=48M"
+JVM_OPTS="${JVM_OPTS} -XX:MaxGCThreads=2 -Dcom.sap.jvm.vmtag=xs -Dcom.sap.xs2rt.client.opaqueToken=true"
+# -Dcom.sap.xs2rt.client.opaqueToken=true
+
+fi
+
+exec "$JAVA" ${JVM_OPTS} -cp "$JARSDIR/*" -Dhttp.keepAlive=false com.sap.xs2rt.client.impl.Main "$@"

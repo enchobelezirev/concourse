@@ -258,16 +258,13 @@ function enable_opaque_tokens_on_xs {
     # TOKEN=$(xs oauth-token)
     # echo $TOKEN
     echo "Changing xs script to support opaque tokens..."
-    export OPAQUE_TOKEN_ENABLE_STRING="-Dcom.sap.xs2rt.client.opaqueToken=true"
-    cat "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs" | sed -e "s/\${OPAQUE_TOKEN_ENABLE_STRING}/-Dcom.sap.xs2rt.client.opaqueToken=true/"  > "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs"
-    echo "Catting the changed xs script..."
-    cat "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs"
+    cat "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs-with-opaque-tokens"
     echo "Removing old XS script..."
     rm -rf ${XS_ROOT}/bin/xs
     echo "Listing bin directory"
     ls -a -l ${XS_ROOT}/bin
     echo "moving the changed XS Script"
-    mv "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs" ${XS_ROOT}/bin/
+    mv "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs-with-opaque-tokens" ${XS_ROOT}/bin/xs
     echo "XS script changed."
     cat ${XS_ROOT}/bin/xs
     ls -a -l ${XS_ROOT}/bin
@@ -296,18 +293,11 @@ function disable_opaque_tokens_on_xs {
     # OPAQUE_TOKEN=$(xs oauth-token)
     # echo $OPAQUE_TOKEN
     echo "Changing xs script not to support opaque tokens..."
-    OPAQUE_TOKEN_ENABLE_STRING=""
-    cat ${REPLACEMENT_XS_SCRIPT}
     rm -rf ${XS_ROOT}/bin/xs
-    mv ${REPLACEMENT_XS_SCRIPT} ${XS_ROOT}/bin/
+    mv "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs-without-opaque-tokens" ${XS_ROOT}/bin/xs
     echo "XS script changed."
     echo "Validating that the opaque-tokens are supported..."
-    TOKEN=$(xs oauth-token)
-    echo $TOKEN
-    if [[ $TOKEN == $OPAQUE_TOKEN ]]; then
-        echo "Token not changed successfully. Fisrt token: ${OPAQUE_TOKEN}, expected jwt token but got: ${TOKEN}"
-        exit 1
-    fi
+    cat ${XS_ROOT}/bin/xs
 }
 
 function login {
