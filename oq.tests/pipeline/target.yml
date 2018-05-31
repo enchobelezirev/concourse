@@ -213,6 +213,7 @@ jobs:
             ${RT} apps
             export TEST_WORKING_DIRECTORY="$(pwd)"
             echo "Test working dir... ${TEST_WORKING_DIRECTORY}"
+            export XSCLIENT_CONTEXTFILE=${TEST_WORKING_DIRECTORY}/${XSCLIENT_CONTEXTFILE}
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh" > /dev/null
             echo "Executing bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"..."
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
@@ -262,22 +263,21 @@ jobs:
         args:
           - -c
           - |
-            cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
-            cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+            # cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
+            # cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
             
             env
            
-            chmod a+x login-dir
-            chmod a+x login-dir/*
-            whoami
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
+            export TEST_WORKING_DIRECTORY="$(pwd)"
+            echo "Test working dir... ${TEST_WORKING_DIRECTORY}"
+            export XSCLIENT_CONTEXTFILE=${TEST_WORKING_DIRECTORY}/${XSCLIENT_CONTEXTFILE}
+            
+            bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
              echo "ls -a -l login-dir"
             ls -a -l login-dir
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Deploy/run.sh"
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Deploy/run.sh"
-            xs deploy ${MTAR_LOCATION}
+            bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Deploy/run.sh"
+            # xs deploy ${MTAR_LOCATION}
     params:
-      TEST_WORKING_DIRECTORY: "/workspace"
       DEFAULT_ORG: ((DEFAULT_ORG))
       DEFAULT_SPACE: ((DEFAULT_SPACE))
       DEPLOY_SERVICE_URL: ((DEPLOY_SERVICE_URL))
@@ -288,9 +288,9 @@ jobs:
       USER_PASS: ((USER_PASS))
       RT: xs
       XSCLIENT_CONTEXTFILE: login-dir/config
-      APP_LOCATION: "/workspace/test_resources/opaque-tokens-resources"
+      APP_LOCATION: "oq-test-git-repo/oq.tests/test_resources/opaque-tokens-resources"
       EXPECTED_APPLICATIONS: ztana"
-      MTAR_LOCATION: "/workspace/test_resources/opaque-tokens-resources/anantz.mtar"
+      MTAR_LOCATION: "oq-test-git-repo/oq.tests/test_resources/opaque-tokens-resources/anantz.mtar"
       
   - task: disable-opaque-tokens
     image: test-environment-image
@@ -304,9 +304,11 @@ jobs:
         args:
           - -c
           - |
-            cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
-            cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Disable Opaque Tokens/run.sh"
+            # cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
+            # cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+
+            bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Disable Opaque Tokens/run.sh"
+            xs oauth-token
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
       RT: xs
@@ -324,15 +326,19 @@ jobs:
         args:
           - -c
           - |
-            cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
-            cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Undeploy/run.sh"
-            xs oauth-token
-            xs undeploy anatz --delete-services --delete-service-brokers --do-not-fail-on-missing-permissions -f
+            # cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
+            # cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+
+            export TEST_WORKING_DIRECTORY="$(pwd)"
+            echo "Test working dir... ${TEST_WORKING_DIRECTORY}"
+            export XSCLIENT_CONTEXTFILE=${TEST_WORKING_DIRECTORY}/${XSCLIENT_CONTEXTFILE}
+
+            bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Undeploy/run.sh"
+            # xs oauth-token
+            # xs undeploy anatz --delete-services --delete-service-brokers --do-not-fail-on-missing-permissions -f
     params:
       MTA_ID: anatz
-      APP_LOCATION: "/workspace/test_resources/opaque-tokens-resources"
-      TEST_WORKING_DIRECTORY: "/workspace"
+      APP_LOCATION: "oq-test-git-repo/oq.tests/test_resources/opaque-tokens-resources"
       DEFAULT_ORG: ((DEFAULT_ORG))
       DEFAULT_SPACE: ((DEFAULT_SPACE))
       DEPLOY_SERVICE_URL: ((DEPLOY_SERVICE_URL))
@@ -356,11 +362,13 @@ jobs:
         args:
           - -c
           - |
-            cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+            export TEST_WORKING_DIRECTORY="$(pwd)"
+            echo "Test working dir... ${TEST_WORKING_DIRECTORY}"
+            export XSCLIENT_CONTEXTFILE=${TEST_WORKING_DIRECTORY}/${XSCLIENT_CONTEXTFILE}
+            
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Delete Space/run.sh"
-            xs delete-space ${SPACE_NAME} -f
+            # xs delete-space ${SPACE_NAME} -f
     params:
-      TEST_WORKING_DIRECTORY: "/workspace"
       ORG_NAME: ((ORG_NAME))
       SPACE_NAME: opaque-tokens-test
       RT_API_ENDPOINT: ((RT_API_ENDPOINT))
