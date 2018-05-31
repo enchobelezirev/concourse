@@ -198,12 +198,38 @@ jobs:
           - |
             ls -a -l /workspace/xs/bin
             echo "Na maika ti v putkata..."
-            cat /workspace/xs/bin/xs
-            cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
-            cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            export XSCLIENT_CONTEXTFILE="login-dir"
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
+            current_dir=$(pwd)
+            echo "Before copying the resource the location is..."
+            echo $current_dir
+            # cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
+            # cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
+            echo "After copying the resources the location is..."
+            pwd
+            cd $current_dir
+            rm -rf login-dir && mkdir -pv login-dir
+            env
+            ls -a -l login-dir
+            ${RT} target
+            ${RT} apps
+            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh" > /dev/null
+            echo "Executing bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"..."
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
+            echo "ls -a -l login-dir"
+            ls -a -l login-dir
+            echo "Trying to do some magic with the xs script.."
+            ${RT} oauth-token
+            ${RT} apps
+            ${RT} spaces
+            echo "Executing bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"..."
+            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
+            ${RT} login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation -o ${ORG_NAME} -s ${SPACE_NAME}
+            echo "Trying to do some magic with the xs script.."
+            ${RT} oauth-token
+            ${RT} apps
+            ${RT} spaces
+            echo "ls -a -l login-dir"
+            ls -a -l login-dir
+            whoami
       outputs:
         - name: login-dir
     params:
@@ -217,6 +243,7 @@ jobs:
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
       RECREATE_SPACE: recreateSpace
+      XSCLIENT_CONTEXTFILE: login-dir/config
       RT: xs
       REPLACEMENT_XS_SCRIPT: "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs"
   
@@ -233,16 +260,20 @@ jobs:
         args:
           - -c
           - |
-            cat login-dir
-            for i in login-dir/*; do echo "Printing content of $i"; cat $i; done;
-            $(which xs)
-            echo "This is the modified xs script $(cat $(which xs))"
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            echo "export XSCLIENT_CONTEXTFILE=login-dir"
-            export XSCLIENT_CONTEXTFILE="login-dir"
+            
+            env
+           
+            chmod a+x login-dir
+            chmod a+x login-dir/*
+            whoami
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
+             echo "ls -a -l login-dir"
+            ls -a -l login-dir
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Deploy/run.sh"
+            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Deploy/run.sh"
+            xs deploy ${MTAR_LOCATION}
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
       DEFAULT_ORG: ((DEFAULT_ORG))
@@ -254,6 +285,7 @@ jobs:
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
       RT: xs
+      XSCLIENT_CONTEXTFILE: login-dir/config
       APP_LOCATION: "/workspace/test_resources/opaque-tokens-resources"
       EXPECTED_APPLICATIONS: ztana"
       MTAR_LOCATION: "/workspace/test_resources/opaque-tokens-resources/anantz.mtar"
@@ -292,10 +324,11 @@ jobs:
           - |
             cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            export XSCLIENT_CONTEXTFILE="login-dir"
             bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Undeploy/run.sh"
+            xs oauth-token
+            xs undeploy anatz --delete-services --delete-service-brokers --do-not-fail-on-missing-permissions -f
     params:
-      # TODO: MTA ID
+      MTA_ID: anatz
       APP_LOCATION: "/workspace/test_resources/opaque-tokens-resources"
       TEST_WORKING_DIRECTORY: "/workspace"
       DEFAULT_ORG: ((DEFAULT_ORG))
@@ -306,6 +339,7 @@ jobs:
       RT_API_ENDPOINT: ((RT_API_ENDPOINT))
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
+      XSCLIENT_CONTEXTFILE: login-dir/config
       RT: xs
   - task: delete-space
     image: test-environment-image
@@ -320,15 +354,15 @@ jobs:
         args:
           - -c
           - |
-            cp -rv oq-test-git-repo/oq.tests/test_scenarios /workspace/
             cp -rv oq-test-git-repo/oq.tests/test_scripts /workspace/
-            export XSCLIENT_CONTEXTFILE="login-dir"
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Delete Space/run.sh"
+            bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Delete Space/run.sh"
+            xs delete-space ${SPACE_NAME} -f
     params:
       TEST_WORKING_DIRECTORY: "/workspace"
       ORG_NAME: ((ORG_NAME))
       SPACE_NAME: opaque-tokens-test
       RT_API_ENDPOINT: ((RT_API_ENDPOINT))
+      XSCLIENT_CONTEXTFILE: login-dir/config
       USER_NAME: ((USER_NAME))
       USER_PASS: ((USER_PASS))
       RT: xs

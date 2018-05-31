@@ -5,6 +5,8 @@ if [[ -z ${RT_API_ENDPOINT} && ${RT} -eq "xs" ]] ; then
         get_xs_api_endpoint;
         RT_API_ENDPOINT=${API_ENDPOINT};
 fi
+env
+pwd
 #Other required input: 
 #USER_NAME= to be set
 #USER_PASS= to be set
