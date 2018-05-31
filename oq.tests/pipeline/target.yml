@@ -211,6 +211,8 @@ jobs:
             ls -a -l login-dir
             ${RT} target
             ${RT} apps
+            export TEST_WORKING_DIRECTORY="$(pwd)"
+            echo "Test working dir... ${TEST_WORKING_DIRECTORY}"
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh" > /dev/null
             echo "Executing bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"..."
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
