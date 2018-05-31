@@ -211,22 +211,22 @@ jobs:
             ls -a -l login-dir
             ${RT} target
             ${RT} apps
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh" > /dev/null
-            echo "Executing bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"..."
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
+            bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh" > /dev/null
+            echo "Executing bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"..."
+            bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
             echo "ls -a -l login-dir"
             ls -a -l login-dir
             echo "Trying to do some magic with the xs script.."
             ${RT} oauth-token
             ${RT} apps
             ${RT} spaces
-            echo "Executing bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"..."
-            bash "/workspace/test_scenarios/XS Tests/Opaque Tokens/Login and Target/run.sh"
-            ${RT} login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation -o ${ORG_NAME} -s ${SPACE_NAME}
-            echo "Trying to do some magic with the xs script.."
-            ${RT} oauth-token
-            ${RT} apps
-            ${RT} spaces
+            # echo "Executing bash "oq-test-git-repo/oq.tests/XS Tests/Opaque Tokens/Login and Target/run.sh"..."
+            # bash "oq-test-git-repo/oq.tests/XS Tests/Opaque Tokens/Login and Target/run.sh"
+            # ${RT} login -a ${RT_API_ENDPOINT} -u ${USER_NAME} -p ${USER_PASS} --skip-ssl-validation -o ${ORG_NAME} -s ${SPACE_NAME}
+            # echo "Trying to do some magic with the xs script.."
+            # ${RT} oauth-token
+            # ${RT} apps
+            # ${RT} spaces
             echo "ls -a -l login-dir"
             ls -a -l login-dir
             whoami
@@ -245,7 +245,7 @@ jobs:
       RECREATE_SPACE: recreateSpace
       XSCLIENT_CONTEXTFILE: login-dir/config
       RT: xs
-      REPLACEMENT_XS_SCRIPT: "/workspace/test_scenarios/XS Tests/Opaque Tokens/xs"
+      REPLACEMENT_XS_SCRIPT: "oq-test-git-repo/oq.tests/XS Tests/Opaque Tokens/xs"
   
   - task: test-deploy
     image: test-environment-image
