@@ -7,6 +7,8 @@ env
 ls -a -l oq-test-git-repo/oq.tests/test_scripts
 ls -a -l oq-test-git-repo/oq.tests/
 ls -a -l oq-test-git-repo/
+pwd
+ls -a -l
 bash "oq-test-git-repo/oq.tests/test_scripts/login_and_target_space.sh"
 if [[ $? -ne 0 ]] ; then echo "EXECUTION FAILED!";
 mailx -S smtp=mail.sap.corp -s "EXECUTION FAILED! ./SL4XS2/XS Deploy Service OQ Tests/Test Suites/Functionality Tests/Parallel Set 1/Optional MTA Resources/Login and Target/Login and Target" -v dimitar.donchev@sap.com <<<./SL4XS2/XS Deploy Service OQ Tests/Test Suites/Functionality Tests/Parallel Set 1/Optional MTA Resources/Login and Target/Login and Target;
