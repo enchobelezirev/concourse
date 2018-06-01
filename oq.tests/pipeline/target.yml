@@ -271,12 +271,14 @@ jobs:
             export TEST_WORKING_DIRECTORY="$(pwd)"
             echo "Test working dir... ${TEST_WORKING_DIRECTORY}"
             export XSCLIENT_CONTEXTFILE=${TEST_WORKING_DIRECTORY}/${XSCLIENT_CONTEXTFILE}
-            
+            export MTAR_LOCATION=${TEST_WORKING_DIRECTORY}/${MTAR_LOCATION}
+            export APP_LOCATION=${TEST_WORKING_DIRECTORY}/${APP_LOCATION}
+
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Enable Opaque Tokens/run.sh"
-             echo "ls -a -l login-dir"
+            echo "ls -a -l login-dir"
             ls -a -l login-dir
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Deploy/run.sh"
-            # xs deploy ${MTAR_LOCATION}
+
     params:
       DEFAULT_ORG: ((DEFAULT_ORG))
       DEFAULT_SPACE: ((DEFAULT_SPACE))
@@ -289,7 +291,7 @@ jobs:
       RT: xs
       XSCLIENT_CONTEXTFILE: login-dir/config
       APP_LOCATION: "oq-test-git-repo/oq.tests/test_resources/opaque-tokens-resources"
-      EXPECTED_APPLICATIONS: ztana"
+      EXPECTED_APPLICATIONS: anatz"
       MTAR_LOCATION: "oq-test-git-repo/oq.tests/test_resources/opaque-tokens-resources/anantz.mtar"
       
   - task: disable-opaque-tokens
@@ -332,6 +334,7 @@ jobs:
             export TEST_WORKING_DIRECTORY="$(pwd)"
             echo "Test working dir... ${TEST_WORKING_DIRECTORY}"
             export XSCLIENT_CONTEXTFILE=${TEST_WORKING_DIRECTORY}/${XSCLIENT_CONTEXTFILE}
+            export APP_LOCATION=${TEST_WORKING_DIRECTORY}/${APP_LOCATION}
 
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Undeploy/run.sh"
             # xs oauth-token
@@ -365,7 +368,7 @@ jobs:
             export TEST_WORKING_DIRECTORY="$(pwd)"
             echo "Test working dir... ${TEST_WORKING_DIRECTORY}"
             export XSCLIENT_CONTEXTFILE=${TEST_WORKING_DIRECTORY}/${XSCLIENT_CONTEXTFILE}
-            
+
             bash "oq-test-git-repo/oq.tests/test_scenarios/XS Tests/Opaque Tokens/Delete Space/run.sh"
             # xs delete-space ${SPACE_NAME} -f
     params:
